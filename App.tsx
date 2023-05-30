@@ -1,118 +1,132 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import GoalList from './components/GoalList';
+import HomeScreen from './components/HomeScreen';
+import Logout from './components/Logout';
+import Compass from './components/Compass';
+import Profile from './components/Profile';
+import Shared from './components/Shared'
+import Assignments from './components/Assignments';
+import Trophies from './components/Trophies';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import * as Types  from './types/types';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+//  habit example
+const testHabitLoop: Types.HabitLoop={  type:"daily"}
+const testHabitScale: Types.HabitScale={  type:"boolean"}
+
+const testHabit: Types.Habit={
+  description: "my habbit example",
+  type: 'habit',
+  goal: 61,
+  id: "123",
+  loop: testHabitLoop,
+  name: "habitExample1",
+  scale: testHabitScale,
+  show_in_lobby: true,
+  start_date: "2023-05-17"
+}
+const arrayOfHabits = [testHabit]
+
+// task example
+const testTask: Types.Task={
+  due_date: "2023-05-17",
+  trophy_date: null,
+  type: 'task',
+  goal: 61,
+  id: "1",
+  name: "taskExample1",
+  show_in_lobby: true,
+  finished: false
+}
+const arrayOfTasks = [testTask]
+
+// character example
+const testCharacter: Types.Character={
+  goal: 61,
+  type: 'character',
+  id: "11",
+  name: "characterExample",
+  show_in_lobby: true
+}
+
+//generic example
+const testGeneric: Types.Generic={
+  goal: 61,
+  type: 'generic',
+  id: "1234",
+  name: "genericExample",
+  show_in_lobby: true
+}
+
+// sheet example
+const testSheet: Types.Sheet={
+  attribute_name: "status",
+  content: "status sheet",
+  created_on: "2023-05-17",
+  id: 1,
+  info: "info sheet",
+  is_active: true,
+  is_deleted: false,
+  sheet_name: "test sheet"
+}
+
+// goal example
+const testGoal: Types.Goal={
+  goalitems: arrayOfHabits,
+  habits: arrayOfHabits,
+  tasks: arrayOfTasks,
+  characters: [testCharacter],
+  generics: [testGeneric],
+  id: 61,
+  is_deleted: false,
+  is_active: true,
+  lobby_personal: false,
+  lobby_values: true,
+  itemorder: null,
+  name: "goalExample",
+  sheets: [testSheet]
+}
+const arrayOfGoals = [testGoal]
+
+const Drawer = createDrawerNavigator();
+
+
+
+function App(){
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <NavigationContainer>
+      <Drawer.Navigator>
+
+        <Drawer.Screen name="Home">
+          {() => <HomeScreen data = {arrayOfGoals} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="Goals" >
+          {() => <GoalList data = {arrayOfGoals} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="Trophies" component={Trophies}/>
+        <Drawer.Screen name="Assignments" component={Assignments}/>
+        <Drawer.Screen name="Shared" component={Shared}/>
+        <Drawer.Screen name="Profile" component={Profile}/>
+        <Drawer.Screen name="Compass" component={Compass}/>
+        <Drawer.Screen name="Logout" component={Logout}/>
+        
+      </Drawer.Navigator>
+
+
+
+    </NavigationContainer>
+
+
+
+
+
   );
 }
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
